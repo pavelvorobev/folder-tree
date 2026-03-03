@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="key in dataKeys" :key="key" class="folder-item">
-      <button @click="toggleFolder(key)" class="folder-item__head">
+      <button type="button" @click="toggleFolder(key)" class="folder-item__head">
         <span v-if="data[key]?.type === 'folder'">📁</span>
         <span v-else> 📄 </span>
         {{ key }}
@@ -15,14 +15,13 @@
 
 <script setup lang="ts">
 import type { TreeNode } from '@/common/types/types'
-import UiFoldersTree from '@/common/ui/UiFoldersTree.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
   data: Record<string, TreeNode>
 }>()
 
-const dataKeys = Object.keys(props.data)
+const dataKeys = computed(() => Object.keys(props.data))
 const openedFolders = ref<Set<string>>(new Set())
 
 const toggleFolder = (value: string): void => {
